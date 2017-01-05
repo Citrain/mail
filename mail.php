@@ -14,11 +14,14 @@ require 'PHPMailer/PHPMailerAutoload.php';
 
  function Mailing($id=0){
 	 global $bdd;
+	 if(isset($_GET['id'])){
+		 $id=$_GET['id'];
+	 }
 	$req = $bdd->prepare('SELECT * from user where id>:id');
 	$req->bindParam(":id",$id);
 	$req->execute();
 	//$req->execute(array($id));
-
+echo $id;
 	  var_dump($req);
 		var_dump($id);
 	if($req->fetch()){
@@ -82,11 +85,10 @@ require 'PHPMailer/PHPMailerAutoload.php';
 			echo"<br /><br />";
 			echo date('s') . "\n";
 			echo"<br /><br />";
-			usleep(2000000);
-			echo date('s') . "\n";
-				Mailing($id);
+			usleep(1000000);
+			  header('Location: mail.php?id='.$id);
 		}
-	}else{break;}
+	}else{echo date('s') . "\n";break;}
 
 }
 
