@@ -13,15 +13,18 @@ require 'PHPMailer/PHPMailerAutoload.php';
 
 
  function Mailing($id=0){
+	 echo $id;
 	 global $bdd;
 	 if(isset($_GET['id'])){
 		 $id=$_GET['id'];
+		 echo"get";
 	 }
-	$req = $bdd->prepare('SELECT * from user where id>:id');
+
+	$req = $bdd->prepare('SELECT * from user where id>(:id+1)');
 	$req->bindParam(":id",$id);
 	$req->execute();
 	//$req->execute(array($id));
-echo $id;
+  echo $id;
 	  var_dump($req);
 		var_dump($id);
 	if($req->fetch()){
@@ -55,7 +58,7 @@ echo $id;
 			//Username to use for SMTP authentication - use full email address for gmail
 			$mail->Username = "sylv13129@gmail.com";
 			//Password to use for SMTP authentication
-			$mail->Password = "pass";
+			$mail->Password = "pwd";
 			//Set who the message is to be sent from
 			$mail->setFrom('sylv13129@gmail.com', 'First Last');
 			//Set an alternative reply-to address
@@ -81,14 +84,15 @@ echo $id;
 			    echo "Message sent!";
 			}
 
-			$req->closeCursor();
+
 			echo"<br /><br />";
 			echo date('s') . "\n";
 			echo"<br /><br />";
 			usleep(1000000);
-			  header('Location: mail.php?id='.$id);
+			echo"<script>alert('fait')</script>";
+			header('Location: mail.php?id='.$id);
 		}
-	}else{echo date('s') . "\n";break;}
+	}else{echo date('s') . "\n";exit;}
 
 }
 
